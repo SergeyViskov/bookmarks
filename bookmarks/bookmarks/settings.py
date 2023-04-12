@@ -13,6 +13,7 @@ DEBUG = True
 ALLOWED_HOSTS = list(os.getenv('SECRET_KEY'))
 
 INSTALLED_APPS = [
+    'images',
     'account',
     'django.contrib.admin',
     'django.contrib.auth',
