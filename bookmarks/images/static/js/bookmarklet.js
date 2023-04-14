@@ -8,7 +8,7 @@ var head = document.getElementsByTagName('head')[0];  // Get HTML head element
 var link = document.createElement('link'); // Create new link Element
 link.rel = 'stylesheet'; // set the attributes for link element
 link.type = 'text/css';
-link.href = styleUrl + '?r=' + Math.floor(Math.random()*9999999999999999);
+link.href = styleUrl + '?r=' + Math.floor(Math.random()*9999999999999999n);
 head.appendChild(link);  // Append link element to HTML head
 
 // load HTML

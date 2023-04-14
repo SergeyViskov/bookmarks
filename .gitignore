@@ -131,3 +131,5 @@ dmypy.json
 #sert auth keys
 *.crt
 *.key
+
+/media
