@@ -132,4 +132,4 @@ dmypy.json
 *.crt
 *.key
 
-/media
+media/
