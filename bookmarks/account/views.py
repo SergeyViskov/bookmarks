@@ -12,6 +12,8 @@ from .forms import (
     ProfileEditForm,
 )
 from .models import Profile, Contact
+from actions.utils import create_action
+from actions.models import Action
 
 
 def register(request):
@@ -22,6 +24,7 @@ def register(request):
             new_user.set_password(user_form.cleaned_data['password'])
             new_user.save()
             Profile.objects.create(user=new_user)
+            create_action(new_user, 'has created an account')
             return render(
                 request, 'account/register_done.html', {'new_user': new_user})
     else:
@@ -54,7 +57,16 @@ def user_login(request):
 
 @login_required
 def dashboard(request):
-    return render(request, 'account/dashboard.html', {'section': 'dashboard'})
+    actions = Action.objects.exclude(user=request.user)
+    following_ids = request.user.following.values_list('id', flat=True)
+    if following_ids:
+        actions = actions.filter(user_id__in=following_ids)
+    actions = actions[:10]
+    context = {
+        'section': 'dashboard',
+        'actions': actions,
+    }
+    return render(request, 'account/dashboard.html', context)
 
 
 @login_required
@@ -112,6 +124,7 @@ def user_follow(request):
                     user_from=request.user,
                     user_to=user,
                 )
+                create_action(request.user, 'is following', user)
             else:
                 Contact.objects.filter(
                     user_from=request.user,
