@@ -2,8 +2,9 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.views.decorators.http import require_POST
+from django.contrib import messages
 
 from .forms import (
     LoginForm,
@@ -14,6 +15,8 @@ from .forms import (
 from .models import Profile, Contact
 from actions.utils import create_action
 from actions.models import Action
+
+User = get_user_model()
 
 
 def register(request):
@@ -82,6 +85,9 @@ def edit(request):
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
+            messages.success(request, 'Profile updated successfully')
+        else:
+            messages.error(request, 'Error updated your profile')
     else:
         user_form = UserEditForm(instance=request.user)
         profile_form = ProfileEditForm(instance=request.user.profile)
