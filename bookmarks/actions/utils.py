@@ -7,7 +7,7 @@ from .models import Action
 
 
 def create_action(user, verb, target=None):
-    # поиск походего действияб совершенного за последнюю минуту
+    # поиск походего действия, совершенного за последнюю минуту
     now = timezone.now()
     last_minute = now - datetime.timedelta(seconds=60)
     similar_actions = Action.objects.filter(
